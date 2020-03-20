@@ -1,0 +1,26 @@
+{
+  "name": "heard-you-like-booleans",
+  "private": true,
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "parcel build index.html",
+    "start": "parcel index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kyle Shevlin <kyle.a.shevlin@gmail.com> (https://kyleshevlin.com)",
+  "license": "MIT",
+  "dependencies": {
+    "@emotion/core": "^10.0.28",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@emotion/babel-preset-css-prop": "^10.0.27",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.19.0",
+    "parcel-bundler": "^1.12.4"
+  }
+}
