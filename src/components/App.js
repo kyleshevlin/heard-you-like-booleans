@@ -1,8 +1,14 @@
 /** @jsx jsx */
 import React from 'react'
 import { css, jsx, Global } from '@emotion/core'
-import { bs } from '../shevy'
+import shevy, { bs } from '../shevy'
 import { getBooleanTable } from '../utils'
+
+const BREAKPOINTS = {
+  alpha: '600px',
+  bravo: '900px',
+  charlie: '1200px',
+}
 
 const COLORS = {
   black: '#25283D',
@@ -46,6 +52,12 @@ export default function App() {
           html {
             box-sizing: border-box;
             font-family: sans-serif;
+            font-size: 125%;
+            line-height: ${shevy.baseLineHeight};
+
+            ${mq(BREAKPOINTS.alpha)} {
+              font-size: 150%;
+            }
           }
 
           body {
@@ -75,15 +87,15 @@ export default function App() {
           marginRight: 'auto',
           width: '90%',
 
-          [mq('600px')]: {
+          [mq(BREAKPOINTS.alpha)]: {
             width: '80%',
           },
 
-          [mq('900px')]: {
+          [mq(BREAKPOINTS.bravo)]: {
             width: '70%',
           },
 
-          [mq('1200px')]: {
+          [mq(BREAKPOINTS.charlie)]: {
             width: '60%',
           },
         }}
@@ -91,7 +103,7 @@ export default function App() {
         <h1 css={{ marginTop: bs(2), marginBottom: bs(2) }}>
           Heard You Like Booleans
         </h1>
-        <div css={{ textAlign: 'center' }}>
+        <div css={{ textAlign: 'center', marginBottom: bs(2) }}>
           <p css={{ fontStyle: 'italic' }}>
             Type the booleans you have, separated by commas to see all the
             possible combinations
@@ -99,7 +111,7 @@ export default function App() {
           <label
             css={{
               display: 'block',
-              fontSize: '1.5rem',
+              fontSize: '1.25rem',
               fontWeight: 'bold',
               marginBottom: bs(0.5),
             }}
@@ -134,7 +146,7 @@ export default function App() {
         <pre
           css={{
             backgroundColor: COLORS.white,
-            fontSize: '1.5rem',
+            fontSize: '1.25rem',
             padding: bs(),
             marginBottom: bs(2),
           }}
@@ -146,12 +158,11 @@ export default function App() {
 
         <footer
           css={{
-            fontSize: '1.25rem',
             textAlign: 'center',
             marginBottom: bs(4),
           }}
         >
-          Built on stream with{' '}
+          Built on <a href="https://twitch.tv/kyleshevlin">stream</a> with{' '}
           <a href="https://twitter.com/kyleshevlin">Kyle Shevlin</a>. Code at{' '}
           <a href="https://github.com/kyleshevlin/heard-you-like-booleans">
             https://github.com/kyleshevlin/heard-you-like-booleans
