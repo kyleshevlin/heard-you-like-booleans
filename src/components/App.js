@@ -127,7 +127,13 @@ export default function App() {
           </code>
         </pre>
 
-        <footer css={{ fontSize: '1.25rem', textAlign: 'center' }}>
+        <footer
+          css={{
+            fontSize: '1.25rem',
+            textAlign: 'center',
+            marginBottom: bs(4),
+          }}
+        >
           Built on stream with{' '}
           <a href="https://twitter.com/kyleshevlin">Kyle Shevlin</a>. Code at{' '}
           <a href="https://github.com/kyleshevlin/heard-you-like-booleans">
