@@ -10,6 +10,9 @@ const COLORS = {
   white: '#E8E9EB',
 }
 
+const createMediaQuery = breakpoint => `@media (min-width: ${breakpoint})`
+const mq = createMediaQuery
+
 const parseOptions = options => {
   if (!options.length) {
     return []
@@ -48,6 +51,8 @@ export default function App() {
           body {
             background-color: ${COLORS.plum};
             color: ${COLORS.white};
+            padding: 0;
+            margin: 0;
           }
 
           h1,
@@ -66,9 +71,21 @@ export default function App() {
       />
       <div
         css={{
-          width: '65%',
           marginLeft: 'auto',
           marginRight: 'auto',
+          width: '90%',
+
+          [mq('600px')]: {
+            width: '80%',
+          },
+
+          [mq('900px')]: {
+            width: '70%',
+          },
+
+          [mq('1200px')]: {
+            width: '60%',
+          },
         }}
       >
         <h1 css={{ marginTop: bs(2), marginBottom: bs(2) }}>
