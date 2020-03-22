@@ -146,6 +146,9 @@ export default function App() {
             value={options}
           />
         </div>
+        {mappedRows.length ? (
+          <div>{mappedRows.length} boolean combinations</div>
+        ) : null}
         <pre
           css={{
             backgroundColor: COLORS.white,
