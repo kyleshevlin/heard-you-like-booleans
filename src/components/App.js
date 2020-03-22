@@ -24,7 +24,10 @@ const parseOptions = options => {
     return []
   }
 
-  return options.replace(/\s/g, '').split(',')
+  return options
+    .replace(/\s/g, '')
+    .split(',')
+    .filter(str => str !== '')
 }
 
 export default function App() {
