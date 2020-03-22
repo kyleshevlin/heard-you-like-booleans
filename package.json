@@ -7,14 +7,16 @@
   "scripts": {
     "build": "parcel build index.html",
     "start": "parcel index.html",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": "Kyle Shevlin <kyle.a.shevlin@gmail.com> (https://kyleshevlin.com)",
   "license": "MIT",
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "shevyjs": "^1.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
