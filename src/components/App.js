@@ -30,8 +30,18 @@ const parseOptions = options => {
     .filter(str => str !== '')
 }
 
+/**
+ * Allows sharing URLs such as ?b=idle,loading,bad,ok
+ */
+let optionsFromQueryParams = ''
+if (typeof URLSearchParams !== 'undefined') {
+  const params = new URLSearchParams (document.location.search.substring(1));
+  optionsFromQueryParams = params.get('b') || ''
+}
+
+
 export default function App() {
-  const [options, setOptions] = React.useState('')
+  const [options, setOptions] = React.useState(optionsFromQueryParams)
   const textareaRef = React.useRef(null)
   const parsedOptions = parseOptions(options)
   const table = getBooleanTable(parsedOptions.length)
