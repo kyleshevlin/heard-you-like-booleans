@@ -32,6 +32,7 @@ const parseOptions = options => {
 
 export default function App() {
   const [options, setOptions] = React.useState('')
+  const textareaRef = React.useRef(null)
   const parsedOptions = parseOptions(options)
   const table = getBooleanTable(parsedOptions.length)
 
@@ -41,6 +42,14 @@ export default function App() {
       return acc
     }, {})
   })
+
+  const stringifiedRows = JSON.stringify(mappedRows, null, 2)
+
+  const copyToClipboard = () => {
+    textareaRef.current.select()
+    textareaRef.current.setSelectionRange(0, 99999)
+    document.execCommand('copy')
+  }
 
   return (
     <>
@@ -155,12 +164,35 @@ export default function App() {
             fontSize: '1.25rem',
             padding: bs(),
             marginBottom: bs(2),
+            position: 'relative',
           }}
         >
-          <code css={{ color: COLORS.black }}>
-            {JSON.stringify(mappedRows, null, 2)}
-          </code>
+          <button
+            css={{
+              position: 'absolute',
+              top: bs(0.5),
+              right: bs(0.5),
+            }}
+            disabled={!mappedRows.length}
+            onClick={copyToClipboard}
+          >
+            Copy to Clipboard
+          </button>
+          <code css={{ color: COLORS.black }}>{stringifiedRows}</code>
         </pre>
+
+        {/* used to copy to clipboard */}
+        <textarea
+          css={{
+            height: 0,
+            width: 0,
+            position: 'absolute',
+            left: '-999px',
+          }}
+          readOnly
+          ref={textareaRef}
+          value={stringifiedRows}
+        />
 
         <footer
           css={{
