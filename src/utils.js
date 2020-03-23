@@ -17,6 +17,21 @@ function getBooleanTable(number) {
   return result
 }
 
+/**
+ * @url http://girfahelp.blogspot.com/2019/06/copy-current-url-to-clipboard-using.html
+ */
+function copyLink() {
+
+  const dummy = document.createElement('input')
+  const text = window.location.href;
+  document.body.appendChild(dummy);
+  dummy.value = text;
+  dummy.select();
+  document.execCommand('copy');
+  document.body.removeChild(dummy);
+}
+
 module.exports = {
+  copyLink,
   getBooleanTable,
 }

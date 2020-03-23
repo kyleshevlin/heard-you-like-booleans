@@ -2,7 +2,7 @@
 import React from 'react'
 import { css, jsx, Global } from '@emotion/core'
 import shevy, { bs } from '../shevy'
-import { getBooleanTable } from '../utils'
+import { getBooleanTable, copyLink } from '../utils'
 
 const BREAKPOINTS = {
   alpha: '600px',
@@ -63,20 +63,20 @@ const syncLocation = (options) => {
 
   // options minus trailing comma
   const next = options.replace(/,$/, '')
-  
+
   // If the next string contains more information than the previous location
   if (options.length > current.length) {
     // If the user has added a comma or completely replaced
-    if(options[options.length - 1] === ',' || (new RegExp(current)).test(options) === false) {
+    if (options[options.length - 1] === ',' || (new RegExp(current)).test(options) === false) {
       history.pushState({}, '', `?options=${next}`)
     }
   } else {
     // If the user replaced the options string with a shorter string, e.g. copy/paste
-    if((new RegExp(options)).test(current) === false) {
+    if ((new RegExp(options)).test(current) === false) {
       history.pushState({}, '', `?options=${next}`)
     }
   }
-  
+
   history.replaceState({}, '', `?options=${options}`)
 }
 
@@ -248,17 +248,26 @@ export default function App() {
             position: 'relative',
           }}
         >
-          <button
+          <div
             css={{
               position: 'absolute',
               top: bs(0.5),
               right: bs(0.5),
-            }}
-            disabled={!mappedRows.length}
-            onClick={copyToClipboard}
-          >
-            Copy to Clipboard
+            }}>
+            <button
+              css={{ marginRight: 5 }}
+              disabled={!mappedRows.length}
+              onClick={copyToClipboard}
+            >
+              Copy to Clipboard
           </button>
+            <button
+              disabled={!mappedRows.length}
+              onClick={copyLink}
+            >
+              Copy URL to Clipboard
+          </button>
+          </div>
           <code css={{ color: COLORS.black }}>{stringifiedRows}</code>
         </pre>
 
