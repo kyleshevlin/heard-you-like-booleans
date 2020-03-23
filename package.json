@@ -6,10 +6,15 @@
   "main": "index.js",
   "scripts": {
     "build": "parcel build index.html",
-    "lint": "prettier --write src/**/*.js",
+    "format": "prettier --write src/**/*.js",
     "start": "parcel index.html",
     "test": "jest",
     "test:watch": "jest --watch"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run format"
+    }
   },
   "author": "Kyle Shevlin <kyle.a.shevlin@gmail.com> (https://kyleshevlin.com)",
   "license": "MIT",
@@ -24,6 +29,7 @@
     "@emotion/babel-preset-css-prop": "^10.0.27",
     "eslint": "^6.8.0",
     "eslint-plugin-react": "^7.19.0",
+    "husky": "^4.2.3",
     "jest": "^25.1.0",
     "parcel-bundler": "^1.12.4",
     "prettier": "2.0.1"
