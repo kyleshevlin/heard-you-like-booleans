@@ -32,7 +32,7 @@ const parseOptions = options => {
 
 /**
  * getOptionsFromQueryParams :: string
- * 
+ *
  * Allows sharing URLs such as ?b=idle,loading,bad,ok
  */
 const getOptionsFromQueryParams = () => {
@@ -46,15 +46,15 @@ const getOptionsFromQueryParams = () => {
 
 /**
  * syncLocation :: string -> void
- * 
+ *
  * Replaces the browser window's current history state with updated options.
  * The location is replaced while the user is typing and pushed when they add
  * a new boolean or completely replace the previous options with a string
  * that doesn't match the current set of options.
- * 
+ *
  * @param {string} options Comma separated list of options
  */
-const syncLocation = (options) => {
+const syncLocation = options => {
   if (!options.trim()) {
     return
   }
@@ -67,12 +67,15 @@ const syncLocation = (options) => {
   // If the next string contains more information than the previous location
   if (options.length > current.length) {
     // If the user has added a comma or completely replaced
-    if (options[options.length - 1] === ',' || (new RegExp(current)).test(options) === false) {
+    if (
+      options[options.length - 1] === ',' ||
+      new RegExp(current).test(options) === false
+    ) {
       history.pushState({}, '', `?options=${next}`)
     }
   } else {
     // If the user replaced the options string with a shorter string, e.g. copy/paste
-    if ((new RegExp(options)).test(current) === false) {
+    if (new RegExp(options).test(current) === false) {
       history.pushState({}, '', `?options=${next}`)
     }
   }
@@ -82,12 +85,12 @@ const syncLocation = (options) => {
 
 /**
  * useHistory :: string -> (string -> void) -> void
- * 
+ *
  * Hook for synchronizing options state with the browsers
  * location history and vice versa.
- * 
- * @param {string} options 
- * @param {React.Dispatch<React.SetStateAction<string>>} setOptions 
+ *
+ * @param {string} options
+ * @param {React.Dispatch<React.SetStateAction<string>>} setOptions
  */
 const useHistory = (options, setOptions) => {
   // Synchronizes the browsers location with the next set of options.
@@ -106,8 +109,6 @@ const useHistory = (options, setOptions) => {
     return () => window.removeEventListener('popstate', onPopState)
   }, [setOptions])
 }
-
-
 
 export default function App() {
   const [options, setOptions] = React.useState(getOptionsFromQueryParams)
@@ -253,20 +254,18 @@ export default function App() {
               position: 'absolute',
               top: bs(0.5),
               right: bs(0.5),
-            }}>
+            }}
+          >
             <button
               css={{ marginRight: 5 }}
               disabled={!mappedRows.length}
               onClick={copyToClipboard}
             >
               Copy to Clipboard
-          </button>
-            <button
-              disabled={!mappedRows.length}
-              onClick={copyLink}
-            >
+            </button>
+            <button disabled={!mappedRows.length} onClick={copyLink}>
               Copy URL to Clipboard
-          </button>
+            </button>
           </div>
           <code css={{ color: COLORS.black }}>{stringifiedRows}</code>
         </pre>
