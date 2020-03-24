@@ -17,6 +17,23 @@ function getBooleanTable(number) {
   return result
 }
 
+/**
+ * adapted from http://girfahelp.blogspot.com/2019/06/copy-current-url-to-clipboard-using.html
+ */
+function copyValueToClipboard(value) {
+  if (typeof value !== 'string') {
+    return
+  }
+
+  const dummy = document.createElement('input')
+  document.body.appendChild(dummy)
+  dummy.value = value
+  dummy.select()
+  document.execCommand('copy')
+  document.body.removeChild(dummy)
+}
+
 module.exports = {
+  copyValueToClipboard,
   getBooleanTable,
 }

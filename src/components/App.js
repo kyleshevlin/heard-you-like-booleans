@@ -2,7 +2,7 @@
 import React from 'react'
 import { css, jsx, Global } from '@emotion/core'
 import shevy, { bs } from '../shevy'
-import { getBooleanTable } from '../utils'
+import { copyValueToClipboard, getBooleanTable } from '../utils'
 
 const BREAKPOINTS = {
   alpha: '600px',
@@ -30,9 +30,17 @@ const parseOptions = options => {
     .filter(str => str !== '')
 }
 
+const getInitialOptions = () => {
+  if (typeof URLSearchParams === 'undefined') {
+    return ''
+  }
+
+  const params = new URLSearchParams(document.location.search.substring(1))
+  return params.get('options') || ''
+}
+
 export default function App() {
-  const [options, setOptions] = React.useState('')
-  const textareaRef = React.useRef(null)
+  const [options, setOptions] = React.useState(getInitialOptions)
   const parsedOptions = parseOptions(options)
   const table = getBooleanTable(parsedOptions.length)
 
@@ -45,11 +53,9 @@ export default function App() {
 
   const stringifiedRows = JSON.stringify(mappedRows, null, 2)
 
-  const copyToClipboard = () => {
-    textareaRef.current.select()
-    textareaRef.current.setSelectionRange(0, 99999)
-    document.execCommand('copy')
-  }
+  React.useEffect(() => {
+    history.replaceState({}, '', `?options=${options}`)
+  }, [options])
 
   return (
     <>
@@ -167,32 +173,29 @@ export default function App() {
             position: 'relative',
           }}
         >
-          <button
+          <div
             css={{
               position: 'absolute',
               top: bs(0.5),
               right: bs(0.5),
             }}
-            disabled={!mappedRows.length}
-            onClick={copyToClipboard}
           >
-            Copy to Clipboard
-          </button>
+            <button
+              css={{ marginRight: 5 }}
+              disabled={!mappedRows.length}
+              onClick={() => copyValueToClipboard(stringifiedRows)}
+            >
+              Copy Result to Clipboard
+            </button>
+            <button
+              disabled={!mappedRows.length}
+              onClick={() => copyValueToClipboard(window.location.href)}
+            >
+              Copy URL to Clipboard
+            </button>
+          </div>
           <code css={{ color: COLORS.black }}>{stringifiedRows}</code>
         </pre>
-
-        {/* used to copy to clipboard */}
-        <textarea
-          css={{
-            height: 0,
-            width: 0,
-            position: 'absolute',
-            left: '-999px',
-          }}
-          readOnly
-          ref={textareaRef}
-          value={stringifiedRows}
-        />
 
         <footer
           css={{
