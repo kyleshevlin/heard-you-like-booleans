@@ -2,7 +2,7 @@
 import React from 'react'
 import { css, jsx, Global } from '@emotion/core'
 import shevy, { bs } from '../shevy'
-import { getBooleanTable, copyLink } from '../utils'
+import { copyValueToClipboard, getBooleanTable } from '../utils'
 
 const BREAKPOINTS = {
   alpha: '600px',
@@ -113,8 +113,6 @@ const useHistory = (options, setOptions) => {
 export default function App() {
   const [options, setOptions] = React.useState(getOptionsFromQueryParams)
   useHistory(options, setOptions)
-  const textareaRef = React.useRef(null)
-
   const parsedOptions = parseOptions(options)
   const table = getBooleanTable(parsedOptions.length)
 
@@ -126,12 +124,6 @@ export default function App() {
   })
 
   const stringifiedRows = JSON.stringify(mappedRows, null, 2)
-
-  const copyToClipboard = () => {
-    textareaRef.current.select()
-    textareaRef.current.setSelectionRange(0, 99999)
-    document.execCommand('copy')
-  }
 
   return (
     <>
@@ -259,29 +251,19 @@ export default function App() {
             <button
               css={{ marginRight: 5 }}
               disabled={!mappedRows.length}
-              onClick={copyToClipboard}
+              onClick={() => copyValueToClipboard(stringifiedRows)}
             >
-              Copy to Clipboard
+              Copy Result to Clipboard
             </button>
-            <button disabled={!mappedRows.length} onClick={copyLink}>
+            <button
+              disabled={!mappedRows.length}
+              onClick={() => copyValueToClipboard(window.location.href)}
+            >
               Copy URL to Clipboard
             </button>
           </div>
           <code css={{ color: COLORS.black }}>{stringifiedRows}</code>
         </pre>
-
-        {/* used to copy to clipboard */}
-        <textarea
-          css={{
-            height: 0,
-            width: 0,
-            position: 'absolute',
-            left: '-999px',
-          }}
-          readOnly
-          ref={textareaRef}
-          value={stringifiedRows}
-        />
 
         <footer
           css={{
