@@ -30,89 +30,17 @@ const parseOptions = options => {
     .filter(str => str !== '')
 }
 
-/**
- * getOptionsFromQueryParams :: string
- *
- * Allows sharing URLs such as ?b=idle,loading,bad,ok
- */
-const getOptionsFromQueryParams = () => {
-  if (typeof URLSearchParams !== 'undefined') {
-    const params = new URLSearchParams(document.location.search.substring(1))
-    return params.get('options') || ''
+const getInitialOptions = () => {
+  if (typeof URLSearchParams === 'undefined') {
+    return ''
   }
 
-  return ''
-}
-
-/**
- * syncLocation :: string -> void
- *
- * Replaces the browser window's current history state with updated options.
- * The location is replaced while the user is typing and pushed when they add
- * a new boolean or completely replace the previous options with a string
- * that doesn't match the current set of options.
- *
- * @param {string} options Comma separated list of options
- */
-const syncLocation = options => {
-  if (!options.trim()) {
-    return
-  }
-
-  const current = getOptionsFromQueryParams()
-
-  // options minus trailing comma
-  const next = options.replace(/,$/, '')
-
-  // If the next string contains more information than the previous location
-  if (options.length > current.length) {
-    // If the user has added a comma or completely replaced
-    if (
-      options[options.length - 1] === ',' ||
-      new RegExp(current).test(options) === false
-    ) {
-      history.pushState({}, '', `?options=${next}`)
-    }
-  } else {
-    // If the user replaced the options string with a shorter string, e.g. copy/paste
-    if (new RegExp(options).test(current) === false) {
-      history.pushState({}, '', `?options=${next}`)
-    }
-  }
-
-  history.replaceState({}, '', `?options=${options}`)
-}
-
-/**
- * useHistory :: string -> (string -> void) -> void
- *
- * Hook for synchronizing options state with the browsers
- * location history and vice versa.
- *
- * @param {string} options
- * @param {React.Dispatch<React.SetStateAction<string>>} setOptions
- */
-const useHistory = (options, setOptions) => {
-  // Synchronizes the browsers location with the next set of options.
-  React.useEffect(() => {
-    syncLocation(options)
-  }, [options])
-
-  // Updates state of options if the user clicks back or forward buttons.
-  React.useEffect(() => {
-    const onPopState = () => {
-      setOptions(getOptionsFromQueryParams())
-    }
-
-    window.addEventListener('popstate', onPopState)
-
-    return () => window.removeEventListener('popstate', onPopState)
-  }, [setOptions])
+  const params = new URLSearchParams(document.location.search.substring(1))
+  return params.get('options') || ''
 }
 
 export default function App() {
-  const [options, setOptions] = React.useState(getOptionsFromQueryParams)
-  useHistory(options, setOptions)
+  const [options, setOptions] = React.useState(getInitialOptions)
   const parsedOptions = parseOptions(options)
   const table = getBooleanTable(parsedOptions.length)
 
@@ -124,6 +52,10 @@ export default function App() {
   })
 
   const stringifiedRows = JSON.stringify(mappedRows, null, 2)
+
+  React.useEffect(() => {
+    history.replaceState({}, '', `?options=${options}`)
+  }, [options])
 
   return (
     <>
